@@ -2,6 +2,7 @@ package com.example.TutorialExample.Controller;
 
 import com.example.TutorialExample.Model.Tutorial;
 import com.example.TutorialExample.Repository.TutorialRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 public class TutorialController {
+    @Autowired
     TutorialRepository tutorialRepository;
 
     @GetMapping("/tutorials")
@@ -36,7 +38,7 @@ public class TutorialController {
     }
 
     @GetMapping("/tutorials/{id}")
-    public ResponseEntity<Tutorial> getTutorialById(@PathVariable("id") long id) {
+    public ResponseEntity<Tutorial> getTutorialById(@PathVariable("id") Long id) {
         Optional<Tutorial> tutorialData = tutorialRepository.findById(id);
 
         if (tutorialData.isPresent()) {
@@ -50,7 +52,7 @@ public class TutorialController {
     public ResponseEntity<Tutorial> createTutorial(@RequestBody Tutorial tutorial) {
         try {
             Tutorial _tutorial = tutorialRepository
-                    .save(new Tutorial("tutorial.getTitle()", "tutorial.getDescription()", false));
+                    .save(new Tutorial(tutorial.getTitle(), tutorial.getDescription(), false));
             return new ResponseEntity<>(_tutorial, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -58,7 +60,7 @@ public class TutorialController {
     }
 
     @PutMapping("/tutorials/{id}")
-    public ResponseEntity<Tutorial> updateTutorial(@PathVariable("id") long id, @RequestBody Tutorial tutorial) {
+    public ResponseEntity<Tutorial> updateTutorial(@PathVariable("id") Long id, @RequestBody Tutorial tutorial) {
         Optional<Tutorial> tutorialData = tutorialRepository.findById(id);
 
         if (tutorialData.isPresent()) {
@@ -73,7 +75,7 @@ public class TutorialController {
     }
 
     @DeleteMapping("/tutorials/{id}")
-    public ResponseEntity<HttpStatus> deleteTutorial(@PathVariable("id") long id) {
+    public ResponseEntity<HttpStatus> deleteTutorial(@PathVariable("id") Long id) {
         try {
             tutorialRepository.deleteById(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

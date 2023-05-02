@@ -33,4 +33,8 @@ public class Tutorial {
         this.published = published;
     }
 
+    /* '{"id":3,"title":"dummy","description":"Post Test","published":true}'
+
+     */
+
 }
